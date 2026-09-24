@@ -37,19 +37,22 @@ app.get("/", (req, res) => {
     });
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
-
 const authMiddleware = require("./middleware/authMiddleware");
 
 app.get("/api/test", authMiddleware, (req, res) => {
-
     res.json({
         message: "You accessed a protected route",
         user_id: req.user.user_id
     });
-
 });
+
+if (process.env.NODE_ENV !== "production") {
+    const PORT = process.env.PORT || 5000;
+
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
+
+module.exports = app;
 
