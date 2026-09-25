@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
+const { CanvasFactory } = require("pdf-parse/worker");
 const { PDFParse } = require("pdf-parse");
 const mammoth = require("mammoth");
 const Groq = require("groq-sdk");
@@ -154,7 +155,8 @@ async function extractResumeText(filePath, mimetype) {
         const buffer = fs.readFileSync(filePath);
 
         const parser = new PDFParse({
-            data: buffer
+            data: buffer,
+            CanvasFactory
         });
 
         try {
@@ -1445,31 +1447,31 @@ const importResume = async (req, res) => {
 
 
         // =================================================
-// PROJECTS
-// =================================================
+        // PROJECTS
+        // =================================================
 
-for (const project of projects) {
+        for (const project of projects) {
 
-    const [existing] = await connection.query(
-        `
+            const [existing] = await connection.query(
+                `
         SELECT project_id
         FROM user_projects
         WHERE user_id = ?
           AND project_name = ?
         LIMIT 1
         `,
-        [
-            userId,
-            project.project_name
-        ]
-    );
+                [
+                    userId,
+                    project.project_name
+                ]
+            );
 
-    if (existing.length > 0) {
-        continue;
-    }
+            if (existing.length > 0) {
+                continue;
+            }
 
-    await connection.query(
-        `
+            await connection.query(
+                `
         INSERT INTO user_projects
         (
             user_id,
@@ -1481,16 +1483,16 @@ for (const project of projects) {
         )
         VALUES (?, ?, ?, ?, ?, ?)
         `,
-        [
-            userId,
-            project.project_name,
-            project.description || null,
-            project.technologies_used || null,
-            project.start_date || null,
-            project.end_date || null
-        ]
-    );
-}
+                [
+                    userId,
+                    project.project_name,
+                    project.description || null,
+                    project.technologies_used || null,
+                    project.start_date || null,
+                    project.end_date || null
+                ]
+            );
+        }
 
 
         // =================================================
@@ -1659,13 +1661,13 @@ for (const project of projects) {
 
 
         // =================================================
-// CERTIFICATIONS
-// =================================================
+        // CERTIFICATIONS
+        // =================================================
 
-for (const item of certifications) {
+        for (const item of certifications) {
 
-    const [existing] = await connection.query(
-        `
+            const [existing] = await connection.query(
+                `
         SELECT course_id
         FROM user_courses
         WHERE user_id = ?
@@ -1673,19 +1675,19 @@ for (const item of certifications) {
           AND provider <=> ?
         LIMIT 1
         `,
-        [
-            userId,
-            item.name,
-            item.issuer || null
-        ]
-    );
+                [
+                    userId,
+                    item.name,
+                    item.issuer || null
+                ]
+            );
 
-    if (existing.length > 0) {
-        continue;
-    }
+            if (existing.length > 0) {
+                continue;
+            }
 
-    await connection.query(
-        `
+            await connection.query(
+                `
         INSERT INTO user_courses
         (
             user_id,
@@ -1697,18 +1699,18 @@ for (const item of certifications) {
         )
         VALUES (?, ?, ?, ?, ?, ?)
         `,
-        [
-            userId,
-            item.name,
-            item.issuer || null,
-            item.credential_id
-                ? `Credential ID: ${item.credential_id}`
-                : null,
-            item.issue_date || null,
-            null
-        ]
-    );
-}
+                [
+                    userId,
+                    item.name,
+                    item.issuer || null,
+                    item.credential_id
+                        ? `Credential ID: ${item.credential_id}`
+                        : null,
+                    item.issue_date || null,
+                    null
+                ]
+            );
+        }
 
 
         // =================================================
