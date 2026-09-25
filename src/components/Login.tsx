@@ -38,7 +38,7 @@ function Login() {
             );
             login(userResponse.data);
 
-            alert(response.data.message);
+            // alert(response.data.message);
             if (userResponse.data.profile_completed) {
                 navigate("/dashboard");
             } else {
