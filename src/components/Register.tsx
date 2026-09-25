@@ -46,7 +46,7 @@ function Register() {
                     password: form.password
                 }
             );
-            alert(response.data.message);
+            // alert(response.data.message);
             navigate("/login");
         } catch (error: any) {
             alert(error.response?.data?.message || "Registration Failed");
