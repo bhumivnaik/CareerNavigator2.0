@@ -1,4 +1,3 @@
-const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
 const { CanvasFactory } = require("pdf-parse/worker");
@@ -24,40 +23,10 @@ const MAX_RESUME_CHARS = 10000;
 
 
 // =====================================================
-// RESUME DIRECTORY
-// =====================================================
-
-const uploadDir = path.join(
-    __dirname,
-    "../uploads/resumes"
-);
-
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-
-// =====================================================
 // MULTER
 // =====================================================
 
-const storage = multer.diskStorage({
-
-    destination: (req, file, cb) => {
-        cb(null, uploadDir);
-    },
-
-    filename: (req, file, cb) => {
-
-        const extension =
-            path.extname(file.originalname).toLowerCase();
-
-        const filename =
-            `resume_${req.user.user_id}_${Date.now()}${extension}`;
-
-        cb(null, filename);
-    }
-});
+const storage = multer.memoryStorage();
 
 
 const fileFilter = (req, file, cb) => {
@@ -140,10 +109,12 @@ const uploadResume = (req, res, next) => {
 // EXTRACT TEXT
 // =====================================================
 
-async function extractResumeText(filePath, mimetype) {
-    const extension = path.extname(filePath).toLowerCase();
+async function extractResumeText(buffer, originalName, mimetype) {
 
-    console.log("Resume file path:", filePath);
+    const extension =
+        path.extname(originalName).toLowerCase();
+
+    console.log("Resume original name:", originalName);
     console.log("Resume MIME type:", mimetype);
     console.log("Resume extension:", extension);
 
@@ -152,7 +123,6 @@ async function extractResumeText(filePath, mimetype) {
         mimetype === "application/pdf" ||
         extension === ".pdf"
     ) {
-        const buffer = fs.readFileSync(filePath);
 
         const parser = new PDFParse({
             data: buffer,
@@ -160,26 +130,34 @@ async function extractResumeText(filePath, mimetype) {
         });
 
         try {
-            const result = await parser.getText();
+
+            const result =
+                await parser.getText();
 
             return result.text;
+
         } finally {
+
             await parser.destroy();
         }
     }
 
+
     // DOCX
     if (
         mimetype ===
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
         extension === ".docx"
     ) {
-        const result = await mammoth.extractRawText({
-            path: filePath
-        });
+
+        const result =
+            await mammoth.extractRawText({
+                buffer: buffer
+            });
 
         return result.value;
     }
+
 
     throw new Error(
         `Unsupported resume file type. MIME: ${mimetype}, Extension: ${extension}`
@@ -450,7 +428,6 @@ const matchSkillsToDatabase = (
 // =====================================================
 
 const analyzeWithGroq = async (resumeText) => {
-    const MAX_RESUME_CHARS = 30000;
 
     const trimmedResumeText =
         resumeText.length > MAX_RESUME_CHARS
@@ -869,95 +846,7 @@ ${trimmedResumeText}
 };
 
 
-// =====================================================
-// DELETE OLD RESUME
-// =====================================================
 
-const deleteOldResume = async (userId) => {
-
-    const [users] =
-        await db.query(
-            `
-            SELECT resume_file
-            FROM users
-            WHERE user_id = ?
-            `,
-            [userId]
-        );
-
-
-    if (
-        users.length === 0 ||
-        !users[0].resume_file
-    ) {
-        return;
-    }
-
-
-    const oldFilename =
-        users[0].resume_file;
-
-
-    const oldPath =
-        path.join(
-            uploadDir,
-            oldFilename
-        );
-
-
-    if (fs.existsSync(oldPath)) {
-
-        try {
-
-            fs.unlinkSync(oldPath);
-
-            console.log(
-                "Old resume deleted:",
-                oldFilename
-            );
-
-        } catch (error) {
-
-            console.error(
-                "Failed to delete old resume:",
-                error.message
-            );
-        }
-    }
-
-
-    await db.query(
-        `
-        UPDATE users
-        SET resume_file = NULL
-        WHERE user_id = ?
-        `,
-        [userId]
-    );
-};
-
-
-// =====================================================
-// SAVE NEW RESUME REFERENCE
-// =====================================================
-
-const saveResumeReference = async (
-    userId,
-    filename
-) => {
-
-    await db.query(
-        `
-        UPDATE users
-        SET resume_file = ?
-        WHERE user_id = ?
-        `,
-        [
-            filename,
-            userId
-        ]
-    );
-};
 
 
 // =====================================================
@@ -974,8 +863,7 @@ const analyzeResume = async (
         if (!req.file) {
 
             return res.status(400).json({
-                message:
-                    "Please upload a resume"
+                message: "Please upload a resume"
             });
         }
 
@@ -984,40 +872,26 @@ const analyzeResume = async (
             req.user.user_id;
 
 
-        const uploadedFilePath =
-            req.file.path;
-
-
         console.log(
             "New resume:",
-            req.file.filename
+            req.file.originalname
+        );
+
+        console.log(
+            "Resume size:",
+            req.file.size
         );
 
 
         // =================================================
-        // 1. DELETE PREVIOUS RESUME
-        // =================================================
-
-        await deleteOldResume(userId);
-
-
-        // =================================================
-        // 2. SAVE NEW RESUME
-        // =================================================
-
-        await saveResumeReference(
-            userId,
-            req.file.filename
-        );
-
-
-        // =================================================
-        // 3. EXTRACT TEXT
+        // 1. EXTRACT TEXT DIRECTLY FROM MEMORY
         // =================================================
 
         let resumeText =
             await extractResumeText(
-                uploadedFilePath
+                req.file.buffer,
+                req.file.originalname,
+                req.file.mimetype
             );
 
 
@@ -1046,7 +920,7 @@ const analyzeResume = async (
 
 
         // =================================================
-        // 4. LIMIT TEXT
+        // 2. LIMIT TEXT
         // =================================================
 
         if (
@@ -1069,7 +943,7 @@ const analyzeResume = async (
 
 
         // =================================================
-        // 5. GROQ
+        // 3. GROQ ANALYSIS
         // =================================================
 
         const aiResult =
@@ -1079,7 +953,7 @@ const analyzeResume = async (
 
 
         // =================================================
-        // 6. GET MASTER SKILLS
+        // 4. GET MASTER SKILLS
         // =================================================
 
         const [databaseSkills] =
@@ -1095,7 +969,7 @@ const analyzeResume = async (
 
 
         // =================================================
-        // 7. MATCH SKILLS
+        // 5. MATCH SKILLS
         // =================================================
 
         const skillMatch =
@@ -1106,7 +980,7 @@ const analyzeResume = async (
 
 
         // =================================================
-        // 8. EXISTING USER SKILLS
+        // 6. EXISTING USER SKILLS
         // =================================================
 
         const [existingSkills] =
@@ -1142,7 +1016,7 @@ const analyzeResume = async (
 
 
         // =================================================
-        // 9. RETURN ANALYSIS ONLY
+        // 7. RETURN ANALYSIS
         // =================================================
 
         return res.json({
@@ -1150,8 +1024,9 @@ const analyzeResume = async (
             message:
                 "Resume analyzed successfully",
 
+            // No file is stored anymore
             resume_file:
-                req.file.filename,
+                null,
 
             skills,
 
@@ -1199,70 +1074,15 @@ const analyzeResume = async (
 // GET STORED RESUME
 // =====================================================
 
-const getResume = async (
-    req,
-    res
-) => {
+// =====================================================
+// GET STORED RESUME
+// =====================================================
 
-    try {
+const getResume = async (req, res) => {
 
-        const [users] =
-            await db.query(
-                `
-                SELECT resume_file
-                FROM users
-                WHERE user_id = ?
-                `,
-                [req.user.user_id]
-            );
-
-
-        if (
-            users.length === 0 ||
-            !users[0].resume_file
-        ) {
-
-            return res.status(404).json({
-                message:
-                    "No resume found"
-            });
-        }
-
-
-        const filePath =
-            path.join(
-                uploadDir,
-                users[0].resume_file
-            );
-
-
-        if (!fs.existsSync(filePath)) {
-
-            return res.status(404).json({
-                message:
-                    "Resume file not found"
-            });
-        }
-
-
-        return res.sendFile(
-            filePath
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "GET RESUME ERROR:",
-            error
-        );
-
-
-        return res.status(500).json({
-            message:
-                "Failed to retrieve resume"
-        });
-    }
+    return res.status(404).json({
+        message: "Resume storage is not enabled"
+    });
 };
 
 
@@ -1270,39 +1090,12 @@ const getResume = async (
 // DELETE RESUME
 // =====================================================
 
-const deleteResume = async (
-    req,
-    res
-) => {
+const deleteResume = async (req, res) => {
 
-    try {
-
-        await deleteOldResume(
-            req.user.user_id
-        );
-
-
-        return res.json({
-            message:
-                "Resume deleted successfully"
-        });
-
-
-    } catch (error) {
-
-        console.error(
-            "DELETE RESUME ERROR:",
-            error
-        );
-
-
-        return res.status(500).json({
-            message:
-                "Failed to delete resume"
-        });
-    }
+    return res.json({
+        message: "Resume storage is not enabled"
+    });
 };
-
 
 // =====================================================
 // IMPORT ANALYZED DATA TO PROFILE
@@ -1752,10 +1545,9 @@ module.exports = {
     uploadResume,
 
     analyzeResume,
+    deleteResume,
 
     getResume,
-
-    deleteResume,
 
     importResume
 };
