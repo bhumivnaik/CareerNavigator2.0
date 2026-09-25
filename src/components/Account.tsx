@@ -70,14 +70,14 @@ export type Project = {
 
 function Account() {
     const navigate = useNavigate();
-    const { user, login } = useAuth();
+    const { user } = useAuth();
 
     const [education, setEducation] = useState<Education[]>([]);
     const [courses, setCourses] = useState<Course[]>([]);
     const [experience, setExperience] = useState<Experience[]>([]);
     const [projects, setProjects] = useState<Project[]>([]);
 
-    const [loading, setLoading] = useState(true);
+    const [, setLoading] = useState(true);
     const [githubData, setGithubData] =
         useState<GithubData | null>(null);
     const [githubSyncing, setGithubSyncing] =
@@ -106,9 +106,9 @@ function Account() {
 
     //for courses
     const [showCredlyModal, setShowCredlyModal] = useState(false);
-    const [credlyUrl, setCredlyUrl] = useState("");
-    const [credlyLoading, setCredlyLoading] = useState(false);
-    const [credlyCredential, setCredlyCredential] = useState<any>(null);
+    // const [credlyUrl, setCredlyUrl] = useState("");
+    // const [credlyLoading, setCredlyLoading] = useState(false);
+    // const [credlyCredential, setCredlyCredential] = useState<any>(null);
 
     const [githubImport, setGithubImport] =
         useState(false);

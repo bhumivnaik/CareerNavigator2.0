@@ -43,7 +43,7 @@ function CareerRoadmap({ careerId }: CareerRoadmapProps) {
 
     const [openSkillId, setOpenSkillId] = useState<number | null>(null);
 
-    const [careerPaths, setCareerPaths] = useState<CareerPath[]>([]);
+    const [, setCareerPaths] = useState<CareerPath[]>([]);
     const [isCareerPath, setIsCareerPath] = useState(false);
 
     const [verifySkill, setVerifySkill] = useState<RoadmapSkill | null>(null);

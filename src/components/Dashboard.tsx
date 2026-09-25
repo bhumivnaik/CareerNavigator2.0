@@ -36,7 +36,7 @@ type CareerPath = {
 
 function Dashboard() {
     const navigate = useNavigate();
-    const { user, logout } = useAuth();
+    const { user } = useAuth();
     const [streak, setStreak] = useState({
         current_streak: 0,
         longest_streak: 0,
@@ -45,7 +45,7 @@ function Dashboard() {
     const [skills, setSkills] = useState<Skill[]>([]);
     const [careers, setCareers] = useState<Career[]>([]);
     const [loading, setLoading] = useState(true);
-    const [goalMatch, setGoalMatch] = useState(0);
+    const [, setGoalMatch] = useState(0);
     const [learningProgress, setLearningProgress] = useState(0);
 
     //new
@@ -119,7 +119,7 @@ function Dashboard() {
 
                     const goalCareer = careersResponse.data.find(
                         (career: Career) =>
-                            career.career_id === user.career_goal_id
+                            career.career_id === user?.career_goal_id
                     );
 
                     setGoalMatch(
@@ -197,10 +197,10 @@ function Dashboard() {
 
     }, [careerPaths]);
 
-    function handleLogout() {
-        logout();
-        navigate("/login");
-    }
+    // function handleLogout() {
+    //     logout();
+    //     navigate("/login");
+    // }
 
     if (loading) {
         return (
@@ -539,8 +539,13 @@ function Dashboard() {
                     ) : (
                         <div className="career-grid">
                             {careers.slice(0, 3).map((career) => (
-                                <CareerCard key={career.career_id} career={career} />
-                            ))}
+                                <CareerCard
+                                    key={career.career_id}
+                                    career={career}
+                                    isSelected={false}
+                                    onCompareToggle={() => { }}
+                                    compareMode={false}
+                                />))}
                         </div>
                     )}
                 </section>

@@ -1,17 +1,16 @@
-import React from 'react'
 import Navbar from './ui/Navbar'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import type { Career } from './Dashboard';
+import type { Career as CareerType } from './Dashboard';
 import { useEffect, useState } from 'react';
 import CareerCard from './ui/careerCard';
 import { useAuth } from '../context/authContext';
 
 const Career = () => {
     const navigate = useNavigate();
-    const { logout } = useAuth();
+    const { } = useAuth();
 
-    const [careers, setCareers] = useState<Career[]>([]);
+    const [careers, setCareers] = useState<CareerType[]>([]);
     const [loading, setLoading] = useState(true);
 
     const [compareMode, setCompareMode] = useState(false);
@@ -77,10 +76,10 @@ const Career = () => {
         setSelectedCareers([]);
     }
 
-    function handleLogout() {
-        logout();
-        navigate("/login");
-    }
+    // function handleLogout() {
+    //     logout();
+    //     navigate("/login");
+    // }
 
     if (loading) {
         return (

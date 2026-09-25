@@ -49,7 +49,8 @@ function CareerDetails() {
             const progress = Math.min(elapsed / duration, 1);
 
             const currentPercentage = Math.round(
-                progress * career?.match_percentage
+                // progress * career?.match_percentage
+                progress * (career?.match_percentage ?? 0)
             );
 
             setAnimatedPercentage(currentPercentage);
@@ -217,7 +218,7 @@ function CareerDetails() {
                             </div>
 
                             <div className="skill-list">
-                                {career?.matched_skills.length > 0 ? (
+                                {(career?.matched_skills?.length ?? 0) > 0 ? (
                                     career?.matched_skills.map(
                                         (skill) => (
                                             <span
@@ -266,7 +267,7 @@ function CareerDetails() {
 
                             <div className="skill-list">
 
-                                {career?.missing_skills.length > 0 ? (
+                                {(career?.missing_skills?.length ?? 0) > 0 ? (
 
                                     career?.missing_skills.map(
                                         (skill) => (

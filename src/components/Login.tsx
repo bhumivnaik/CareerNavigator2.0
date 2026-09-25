@@ -1,7 +1,6 @@
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, type FormEvent, type ChangeEvent } from "react";
-import Button from "./ui/Button";
 import { useAuth } from "../context/authContext";
 import "../css/auth.css"
 import { Eye, EyeOff } from "lucide-react";

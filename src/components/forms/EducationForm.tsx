@@ -234,6 +234,7 @@ function EducationForm({
     };
 
     const handleDelete = async () => {
+        if (!deleteEducation) return;
         try {
             const token = localStorage.getItem("token");
 

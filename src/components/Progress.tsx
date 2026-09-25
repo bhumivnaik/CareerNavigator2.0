@@ -5,8 +5,7 @@ import "../css/progress.css";
 import PersonalizedPathway from "./PersonalizedPathway";
 import { useAuth } from "../context/authContext";
 import {
-    Target,
-    Check,
+    Target
 } from "lucide-react";
 
 type CareerPath = {
@@ -448,8 +447,8 @@ function Progress() {
         completedSkills.length;
 
 
-    const remainingCount =
-        remainingSkills.length;
+    // const remainingCount =
+    //     remainingSkills.length;
 
 
     /*
@@ -487,71 +486,71 @@ function Progress() {
     /*
      * Update skill progress
      */
-    const handleUpdateSkillProgress = async (
-        skillId: number,
-        percentage: number
-    ) => {
+    // const handleUpdateSkillProgress = async (
+    //     skillId: number,
+    //     percentage: number
+    // ) => {
 
-        try {
+    //     try {
 
-            const token =
-                localStorage.getItem("token");
-
-
-            await axios.put(
-                "/api/skills/progress",
-                {
-                    skill_id: skillId,
-                    progress_percentage:
-                        percentage
-                },
-                {
-                    headers: {
-                        Authorization:
-                            `Bearer ${token}`
-                    }
-                }
-            );
+    //         const token =
+    //             localStorage.getItem("token");
 
 
-            if (percentage === 100) {
+    //         await axios.put(
+    //             "/api/skills/progress",
+    //             {
+    //                 skill_id: skillId,
+    //                 progress_percentage:
+    //                     percentage
+    //             },
+    //             {
+    //                 headers: {
+    //                     Authorization:
+    //                         `Bearer ${token}`
+    //                 }
+    //             }
+    //         );
 
-                window.location.reload();
 
-            } else {
+    //         if (percentage === 100) {
 
-                setSkillProgress(prev =>
-                    prev.map(skill =>
-                        skill.skill_id === skillId
-                            ? {
-                                ...skill,
-                                progress_percentage:
-                                    percentage,
-                                skill_level:
-                                    percentage >= 70
-                                        ? "Proficient"
-                                        : percentage >= 40
-                                            ? "Developing"
-                                            : "Beginner"
-                            }
-                            : skill
-                    )
-                );
+    //             window.location.reload();
 
-            }
+    //         } else {
 
-        } catch (error) {
+    //             setSkillProgress(prev =>
+    //                 prev.map(skill =>
+    //                     skill.skill_id === skillId
+    //                         ? {
+    //                             ...skill,
+    //                             progress_percentage:
+    //                                 percentage,
+    //                             skill_level:
+    //                                 percentage >= 70
+    //                                     ? "Proficient"
+    //                                     : percentage >= 40
+    //                                         ? "Developing"
+    //                                         : "Beginner"
+    //                         }
+    //                         : skill
+    //                 )
+    //             );
 
-            console.error(
-                "UPDATE SKILL PROGRESS ERROR:",
-                error
-            );
+    //         }
 
-            alert(
-                "Failed to update skill progress"
-            );
-        }
-    };
+    //     } catch (error) {
+
+    //         console.error(
+    //             "UPDATE SKILL PROGRESS ERROR:",
+    //             error
+    //         );
+
+    //         alert(
+    //             "Failed to update skill progress"
+    //         );
+    //     }
+    // };
 
 
     return (
@@ -854,7 +853,7 @@ function Progress() {
 
                                     <div className="career-journey-line">
 
-                                        {stages.map((stage, index) => {
+                                        {stages.map((stage) => {
 
                                             const stageSkills =
                                                 effectiveRoadmap
