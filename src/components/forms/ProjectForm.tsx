@@ -93,7 +93,7 @@ function ProjectForm({
                     localStorage.getItem("token");
 
                 const response = await axios.get(
-                    "http://localhost:5000/api/skills",
+                    "/api/skills",
                     {
                         headers: {
                             Authorization:
@@ -188,7 +188,7 @@ function ProjectForm({
 
                     const response =
                         await axios.get(
-                            "http://localhost:5000/api/github/repositories",
+                            "/api/github/repositories",
                             {
                                 headers: {
                                     Authorization:
@@ -316,7 +316,7 @@ function ProjectForm({
             if (project) {
 
                 await axios.put(
-                    `http://localhost:5000/api/profile/project/${project.project_id}`,
+                    `/api/profile/project/${project.project_id}`,
                     data,
                     { headers }
                 );
@@ -324,7 +324,7 @@ function ProjectForm({
             } else {
 
                 await axios.post(
-                    "http://localhost:5000/api/profile/project",
+                    "/api/profile/project",
                     data,
                     { headers }
                 );
@@ -372,7 +372,7 @@ function ProjectForm({
                     localStorage.getItem("token");
 
                 await axios.post(
-                    "http://localhost:5000/api/profile/project/github",
+                    "/api/profile/project/github",
                     selectedGithubProject,
                     {
                         headers: {
@@ -432,7 +432,7 @@ function ProjectForm({
                 localStorage.getItem("token");
 
             await axios.delete(
-                `http://localhost:5000/api/profile/project/${deleteProject.project_id}`,
+                `/api/profile/project/${deleteProject.project_id}`,
                 {
                     headers: {
                         Authorization:

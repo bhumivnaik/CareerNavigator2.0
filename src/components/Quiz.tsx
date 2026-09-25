@@ -64,7 +64,7 @@ function Quiz() {
             try {
 
                 const response = await axios.get(
-                    "http://localhost:5000/api/skills/user",
+                    "/api/skills/user",
                     { headers }
                 );
 
@@ -115,7 +115,7 @@ function Quiz() {
              * using Gemini 3.6 Flash.
              */
             const response = await axios.get(
-                `http://localhost:5000/api/quiz/generate/${selectedSkill}`,
+                `/api/quiz/generate/${selectedSkill}`,
                 { headers }
             );
 
@@ -242,7 +242,7 @@ function Quiz() {
              * correct answers stored on the server.
              */
             const response = await axios.post(
-                "http://localhost:5000/api/quiz/submit",
+                "/api/quiz/submit",
                 {
                     quiz_id: quizId,
                     answers: formattedAnswers

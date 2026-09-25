@@ -69,13 +69,13 @@ function Progress() {
             const headers = { Authorization: `Bearer ${token}` };
 
             await axios.put(
-                "http://localhost:5000/api/careers/goal",
+                "/api/careers/goal",
                 { career_id: careerId },
                 { headers }
             );
 
             const me = await axios.get(
-                "http://localhost:5000/api/auth/me",
+                "/api/auth/me",
                 { headers }
             );
 
@@ -114,7 +114,7 @@ function Progress() {
                 const token = localStorage.getItem("token");
 
                 const response = await axios.get(
-                    "http://localhost:5000/api/careers/paths",
+                    "/api/careers/paths",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`
@@ -222,7 +222,7 @@ function Progress() {
                  * Get user's skill progress
                  */
                 const skillProgressResponse = await axios.get(
-                    "http://localhost:5000/api/skills/progress",
+                    "/api/skills/progress",
                     { headers }
                 );
 
@@ -235,7 +235,7 @@ function Progress() {
                  * Get selected career details
                  */
                 const careerResponse = await axios.get(
-                    `http://localhost:5000/api/careers/${selectedCareerId}`,
+                    `/api/careers/${selectedCareerId}`,
                     { headers }
                 );
 
@@ -248,7 +248,7 @@ function Progress() {
                  * Get selected career roadmap
                  */
                 const roadmapResponse = await axios.get(
-                    `http://localhost:5000/api/careers/${selectedCareerId}/roadmap`,
+                    `/api/careers/${selectedCareerId}/roadmap`,
                     { headers }
                 );
 
@@ -499,7 +499,7 @@ function Progress() {
 
 
             await axios.put(
-                "http://localhost:5000/api/skills/progress",
+                "/api/skills/progress",
                 {
                     skill_id: skillId,
                     progress_percentage:

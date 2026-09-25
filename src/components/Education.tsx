@@ -87,7 +87,7 @@ function Education() {
                 // Get all skills
                 const skillsResponse =
                     await axios.get(
-                        "http://localhost:5000/api/skills",
+                        "/api/skills",
                         { headers }
                     );
 
@@ -98,7 +98,7 @@ function Education() {
                 // Get user's education
                 const educationResponse =
                     await axios.get(
-                        "http://localhost:5000/api/education",
+                        "/api/education",
                         { headers }
                     );
 
@@ -260,7 +260,7 @@ function Education() {
 
             const response =
                 await axios.post(
-                    "http://localhost:5000/api/education",
+                    "/api/education",
 
                     {
                         degree:
@@ -300,7 +300,7 @@ function Education() {
             // Reload education
             const educationResponse =
                 await axios.get(
-                    "http://localhost:5000/api/education",
+                    "/api/education",
                     {
                         headers: {
                             Authorization:
@@ -376,7 +376,7 @@ function Education() {
 
 
             await axios.delete(
-                `http://localhost:5000/api/education/${educationId}`,
+                `/api/education/${educationId}`,
 
                 {
                     headers: {

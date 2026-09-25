@@ -49,7 +49,7 @@ const CareerCompare = () => {
                 const token = localStorage.getItem("token");
 
                 const response = await axios.get(
-                    `http://localhost:5000/api/careers/compare?ids=${ids}`,
+                    `/api/careers/compare?ids=${ids}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`

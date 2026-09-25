@@ -22,7 +22,7 @@ function CareerDetails() {
             try {
                 const token = localStorage.getItem("token");
                 const headers = { Authorization: `Bearer ${token}` };
-                const details = await axios.get(`http://localhost:5000/api/careers/${careerId}`, { headers });
+                const details = await axios.get(`/api/careers/${careerId}`, { headers });
                 console.log("CAREER DETAILS:", details.data);
                 setCareer(details.data);
             } catch (error) {
@@ -69,7 +69,7 @@ function CareerDetails() {
                 const token = localStorage.getItem("token");
 
                 const response = await axios.get(
-                    "http://localhost:5000/api/careers/paths",
+                    "/api/careers/paths",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`
@@ -107,7 +107,7 @@ function CareerDetails() {
             const token = localStorage.getItem("token");
 
             await axios.post(
-                "http://localhost:5000/api/careers/paths",
+                "/api/careers/paths",
                 {
                     career_id: career.career_id
                 },

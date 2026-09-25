@@ -28,7 +28,7 @@ const Career = () => {
 
                 try {
                     const careersResponse = await axios.get(
-                        "http://localhost:5000/api/careers/recommended",
+                        "/api/careers/recommended",
                         { headers }
                     );
 

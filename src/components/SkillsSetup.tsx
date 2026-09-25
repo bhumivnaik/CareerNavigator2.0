@@ -37,7 +37,7 @@ function SkillsSetup() {
 
                 // Get all skills
                 const response = await axios.get(
-                    "http://localhost:5000/api/skills",
+                    "/api/skills",
                     {
                         headers: headers
                     }
@@ -51,7 +51,7 @@ function SkillsSetup() {
 
                 // Get user's already selected skills
                 const userSkillsResponse = await axios.get(
-                    "http://localhost:5000/api/skills/user",
+                    "/api/skills/user",
                     {
                         headers: headers
                     }
@@ -162,7 +162,7 @@ function SkillsSetup() {
             );
 
             const response = await axios.put(
-                "http://localhost:5000/api/skills/user",
+                "/api/skills/user",
                 { skill_ids: skillIds },
                 {
                     headers: {

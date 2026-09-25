@@ -41,7 +41,7 @@ function PersonalizedPathway({
                 const token = localStorage.getItem("token");
 
                 const response = await axios.get(
-                    `http://localhost:5000/api/careers/${careerId}/pathway`,
+                    `/api/careers/${careerId}/pathway`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`

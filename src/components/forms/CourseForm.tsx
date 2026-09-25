@@ -58,7 +58,7 @@ function CourseForm({
                 const token = localStorage.getItem("token");
 
                 const response = await axios.get(
-                    "http://localhost:5000/api/skills",
+                    "/api/skills",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`
@@ -196,7 +196,7 @@ function CourseForm({
             if (course) {
 
                 await axios.put(
-                    `http://localhost:5000/api/profile/course/${course.course_id}`,
+                    `/api/profile/course/${course.course_id}`,
                     data,
                     { headers }
                 );
@@ -204,7 +204,7 @@ function CourseForm({
             } else {
 
                 await axios.post(
-                    "http://localhost:5000/api/profile/course",
+                    "/api/profile/course",
                     data,
                     { headers }
                 );
@@ -251,7 +251,7 @@ function CourseForm({
             const token = localStorage.getItem("token");
 
             await axios.delete(
-                `http://localhost:5000/api/profile/course/${deleteCourse.course_id}`,
+                `/api/profile/course/${deleteCourse.course_id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`

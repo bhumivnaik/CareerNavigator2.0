@@ -36,7 +36,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         let cancelled = false;
 
-        axios.get("http://localhost:5000/api/auth/me", {
+        axios.get("/api/auth/me", {
             headers: {
                 Authorization: `Bearer ${token}`
             }

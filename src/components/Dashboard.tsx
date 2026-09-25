@@ -70,7 +70,7 @@ function Dashboard() {
                 // ================= USER SKILLS =================
                 try {
                     const skillsResponse = await axios.get(
-                        "http://localhost:5000/api/skills/user",
+                        "/api/skills/user",
                         { headers }
                     );
 
@@ -106,7 +106,7 @@ function Dashboard() {
                 // ================= RECOMMENDED CAREERS =================
                 try {
                     const careersResponse = await axios.get(
-                        "http://localhost:5000/api/careers/recommended",
+                        "/api/careers/recommended",
                         { headers }
                     );
 
@@ -134,7 +134,7 @@ function Dashboard() {
                 // ================= USER CAREER PATHS =================
                 try {
                     const pathsResponse = await axios.get(
-                        "http://localhost:5000/api/careers/paths",
+                        "/api/careers/paths",
                         { headers }
                     );
 
@@ -156,7 +156,7 @@ function Dashboard() {
 
                 //get streak
                 const streakResponse = await axios.get(
-                    "http://localhost:5000/api/streak",
+                    "/api/streak",
                     { headers }
                 );
 

@@ -63,7 +63,7 @@ function CredlyPopup({
 
 
             const response = await axios.post(
-                "http://localhost:5000/api/profile/import-credly",
+                "/api/profile/import-credly",
                 {
                     url: url.trim()
                 },
@@ -130,7 +130,7 @@ function CredlyPopup({
 
 
             await axios.post(
-                "http://localhost:5000/api/profile/course",
+                "/api/profile/course",
                 {
                     course_name:
                         credential.name,

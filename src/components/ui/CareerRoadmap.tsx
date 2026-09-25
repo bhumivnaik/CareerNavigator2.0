@@ -61,7 +61,7 @@ function CareerRoadmap({ careerId }: CareerRoadmapProps) {
             try {
                 const token = localStorage.getItem("token");
                 const response = await axios.get(
-                    `http://localhost:5000/api/careers/${careerId}/roadmap`,
+                    `/api/careers/${careerId}/roadmap`,
                     {
                         headers: { Authorization: `Bearer ${token}` }
                     }
@@ -72,7 +72,7 @@ function CareerRoadmap({ careerId }: CareerRoadmapProps) {
                 // ================= USER CAREER PATHS =================
 
                 const pathsResponse = await axios.get(
-                    "http://localhost:5000/api/careers/paths",
+                    "/api/careers/paths",
                     {
                         headers: { Authorization: `Bearer ${token}` }
                     }
@@ -163,7 +163,7 @@ function CareerRoadmap({ careerId }: CareerRoadmapProps) {
             const token = localStorage.getItem("token");
 
             const response = await axios.post(
-                "http://localhost:5000/api/skill-verification/verify",
+                "/api/skill-verification/verify",
                 {
                     skill_id: verifySkill?.skill_id,
                     repository_url: repositoryUrl

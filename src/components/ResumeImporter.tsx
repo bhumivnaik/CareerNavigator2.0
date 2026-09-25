@@ -103,7 +103,7 @@ function ResumeImporter({
         const fetchExistingResume = async () => {
             try {
                 const response = await axios.get(
-                    "http://localhost:5000/api/resume/file",
+                    "/api/resume/file",
                     { headers }
                 );
 
@@ -202,7 +202,7 @@ function ResumeImporter({
 
             const response =
                 await axios.post(
-                    "http://localhost:5000/api/resume/upload",
+                    "/api/resume/upload",
                     formData,
                     {
                         headers: {
@@ -278,7 +278,7 @@ function ResumeImporter({
 
             const response =
                 await axios.post(
-                    "http://localhost:5000/api/resume/import",
+                    "/api/resume/import",
                     resumeData,
                     {
                         headers

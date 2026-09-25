@@ -133,7 +133,7 @@ function Account() {
 
 
             const response = await axios.post(
-                "http://localhost:5000/api/github/sync",
+                "/api/github/sync",
                 {},
                 {
                     headers: {
@@ -191,22 +191,22 @@ function Account() {
                 projectsResponse
             ] = await Promise.all([
                 axios.get(
-                    "http://localhost:5000/api/profile/education",
+                    "/api/profile/education",
                     { headers }
                 ),
 
                 axios.get(
-                    "http://localhost:5000/api/profile/course",
+                    "/api/profile/course",
                     { headers }
                 ),
 
                 axios.get(
-                    "http://localhost:5000/api/profile/experience",
+                    "/api/profile/experience",
                     { headers }
                 ),
 
                 axios.get(
-                    "http://localhost:5000/api/profile/project",
+                    "/api/profile/project",
                     { headers }
                 )
             ]);
@@ -216,7 +216,7 @@ function Account() {
             setProjects(projectsResponse.data);
 
             const githubResponse = await axios.get(
-                "http://localhost:5000/api/github/sync",
+                "/api/github/sync",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`

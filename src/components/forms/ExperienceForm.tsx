@@ -63,7 +63,7 @@ function ExperienceForm({
                 const token = localStorage.getItem("token");
 
                 const response = await axios.get(
-                    "http://localhost:5000/api/skills",
+                    "/api/skills",
                     {
                         headers: {
                             Authorization: `Bearer ${token}`
@@ -231,7 +231,7 @@ function ExperienceForm({
                 // UPDATE
 
                 await axios.put(
-                    `http://localhost:5000/api/profile/experience/${experience.experience_id}`,
+                    `/api/profile/experience/${experience.experience_id}`,
                     data,
                     {
                         headers: {
@@ -246,7 +246,7 @@ function ExperienceForm({
                 // ADD
 
                 await axios.post(
-                    "http://localhost:5000/api/profile/experience",
+                    "/api/profile/experience",
                     data,
                     {
                         headers: {
@@ -300,7 +300,7 @@ function ExperienceForm({
                 localStorage.getItem("token");
 
             await axios.delete(
-                `http://localhost:5000/api/profile/experience/${deleteExperience.experience_id}`,
+                `/api/profile/experience/${deleteExperience.experience_id}`,
                 {
                     headers: {
                         Authorization:

@@ -31,7 +31,7 @@ function Profile() {
         try {
             const token = localStorage.getItem("token");
 
-            await axios.put("http://localhost:5000/api/profile",
+            await axios.put("/api/profile",
                 {
                     full_name: form.fullname,
                     github_profile_url: form.githubUrl,
@@ -123,3 +123,4 @@ function Profile() {
 }
 
 export default Profile
+

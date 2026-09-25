@@ -21,7 +21,7 @@ function Login() {
 
         try {
             const response = await axios.post(
-                "http://localhost:5000/api/auth/login",
+                "/api/auth/login",
                 {
                     email: form.email,
                     password: form.password
@@ -30,7 +30,7 @@ function Login() {
 
             localStorage.setItem("token", response.data.token);
             const userResponse = await axios.get(
-                "http://localhost:5000/api/auth/me",
+                "/api/auth/me",
                 {
                     headers: {
                         Authorization: `Bearer ${response.data.token}`
@@ -98,3 +98,4 @@ function Login() {
 }
 
 export default Login
+
