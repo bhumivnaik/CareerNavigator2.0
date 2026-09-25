@@ -1356,7 +1356,7 @@ const importResume = async (req, res) => {
                     "Job",
                     item.job_title || null,
                     item.company_name || null,
-                    item.start_date || null
+                    safeDate(item.start_date)
                 ]
             );
 
@@ -1384,8 +1384,8 @@ const importResume = async (req, res) => {
                     item.job_title || null,
                     item.company_name || null,
                     item.description || null,
-                    item.start_date || null,
-                    item.end_date || null
+                    safeDate(item.start_date),
+                    safeDate(item.end_date)
                 ]
             );
         }
@@ -1413,7 +1413,7 @@ const importResume = async (req, res) => {
                     "Internship",
                     item.job_title || null,
                     item.company_name || null,
-                    item.start_date || null
+                    safeDate(item.start_date)
                 ]
             );
 
@@ -1441,8 +1441,8 @@ const importResume = async (req, res) => {
                     item.job_title || null,
                     item.company_name || null,
                     item.description || null,
-                    item.start_date || null,
-                    item.end_date || null
+                    safeDate(item.start_date),
+                    safeDate(item.end_date)
                 ]
             );
         }
@@ -1492,7 +1492,7 @@ const importResume = async (req, res) => {
                     item.course_name,
                     item.provider || null,
                     item.description || null,
-                    item.completion_date || null,
+                    safeDate(item.completion_date),
                     item.certificate_url || null
                 ]
             );
@@ -1545,7 +1545,7 @@ const importResume = async (req, res) => {
                     item.credential_id
                         ? `Credential ID: ${item.credential_id}`
                         : null,
-                    item.issue_date || null,
+                    safeDate(item.issue_date),
                     null
                 ]
             );
