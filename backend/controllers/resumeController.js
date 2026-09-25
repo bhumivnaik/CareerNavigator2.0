@@ -1113,6 +1113,52 @@ const safeYear = (value) => {
 
     return Number.isInteger(year) ? year : null;
 };
+
+
+const safeDate = (value) => {
+    if (!value) return null;
+
+    if (typeof value !== "string") {
+        return null;
+    }
+
+    const date = value.trim();
+
+    if (
+        date.toLowerCase() === "present" ||
+        date.toLowerCase() === "current" ||
+        date.toLowerCase() === "ongoing" ||
+        date.toLowerCase() === "now"
+    ) {
+        return null;
+    }
+
+    // Already in YYYY-MM-DD format
+    if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        return date;
+    }
+
+    // Month + year, e.g. "July 2023"
+    const monthYear = date.match(
+        /^(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})$/i
+    );
+
+    if (monthYear) {
+        const month = new Date(
+            `${monthYear[1]} 1, ${monthYear[2]}`
+        ).getMonth() + 1;
+
+        return `${monthYear[2]}-${String(month).padStart(2, "0")}-01`;
+    }
+
+    // Year only, e.g. "2023"
+    if (/^\d{4}$/.test(date)) {
+        return `${date}-01-01`;
+    }
+
+    return null;
+};
+
 // =====================================================
 // IMPORT ANALYZED DATA TO PROFILE
 // =====================================================
@@ -1281,8 +1327,8 @@ const importResume = async (req, res) => {
                     project.project_name,
                     project.description || null,
                     project.technologies_used || null,
-                    project.start_date || null,
-                    project.end_date || null
+                    safeDate(project.start_date),
+    safeDate(project.end_date)
                 ]
             );
         }
