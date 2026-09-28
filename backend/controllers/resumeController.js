@@ -1177,7 +1177,7 @@ const importResume = async (req, res) => {
         certifications = []
     } = req.body;
 
-    const connection = db;
+    const connection = await db.getConnection();
 
     try {
 
@@ -1577,6 +1577,10 @@ const importResume = async (req, res) => {
             message:
                 "Failed to add resume data to profile"
         });
+
+    }finally {
+
+        connection.release();
 
     }
 };
