@@ -149,7 +149,7 @@ function SkillsSetup() {
 
         // Clear search after selecting
         setSearchTerm("");
-
+setShowSkillList(false);
     }
 
 
@@ -346,15 +346,7 @@ function SkillsSetup() {
                                                         }
                                                     </span>
 
-                                                    {skill.category && (
-
-                                                        <small>
-                                                            {
-                                                                skill.category
-                                                            }
-                                                        </small>
-
-                                                    )}
+                
 
                                                 </div>
 
