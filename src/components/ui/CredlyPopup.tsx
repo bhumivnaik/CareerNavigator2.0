@@ -26,7 +26,9 @@ function CredlyPopup({
 }: CredlyPopupProps) {
 
     const [url, setUrl] = useState("");
-
+//new
+    const [error, setError] = useState("");
+    
     const [loading, setLoading] =
         useState(false);
 
@@ -45,16 +47,14 @@ function CredlyPopup({
 
         if (!url.trim()) {
 
-            alert(
-                "Please enter your Credly badge URL."
-            );
+            setError("Please enter your Credly badge URL.");
 
             return;
         }
 
 
         try {
-
+setError("");
             setLoading(true);
 
 
@@ -95,7 +95,7 @@ function CredlyPopup({
             );
 
 
-            alert(
+            setError(
                 error.response?.data?.message ||
                 "Unable to read this Credly credential."
             );
@@ -121,7 +121,7 @@ function CredlyPopup({
 
 
         try {
-
+setError("");
             setSaving(true);
 
 
@@ -165,7 +165,7 @@ function CredlyPopup({
             );
 
 
-            alert(
+            console.log(
                 "Credential added successfully!"
             );
 
@@ -181,7 +181,7 @@ function CredlyPopup({
             );
 
 
-            alert(
+            setError(
                 error.response?.data?.message ||
                 "Failed to save credential."
             );
@@ -233,12 +233,22 @@ function CredlyPopup({
                         <input
                             type="text"
                             value={url}
-                            onChange={(e) =>
-                                setUrl(e.target.value)
-                            }
+                            onChange={(e) =>{
+                                setUrl(e.target.value);
+                                setError("");
+                            }}
                             placeholder="https://www.credly.com/badges/..."
                         />
-
+{error && (
+    <p style={{
+            color: "#dc2626",
+            fontSize: "13px",
+            margin: "6px 0 12px",
+            lineHeight: "1.4"
+        }}>
+        {error}
+    </p>
+)}
 
                         <div className="popup-actions">
 
