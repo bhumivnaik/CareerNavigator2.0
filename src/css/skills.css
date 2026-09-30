@@ -209,3 +209,71 @@
 .continue-button:hover {
     background-color: var(--primary-dark);
 }
+
+.skill-search-results {
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: white;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.skill-search-item {
+    padding: 10px 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.skill-search-item:hover {
+    background: #f3e8ff;
+}
+
+.skill-search-item > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.skill-search-item small {
+    font-size: 11px;
+    color: #777;
+}
+
+.skill-search-item.already-selected {
+    color: #777;
+    background: #f8f8f8;
+    cursor: default;
+}
+
+.skill-check {
+    color: #16a34a;
+    font-weight: bold;
+}
+
+.no-search-results {
+    padding: 10px 12px;
+    margin: 0;
+    color: #777;
+    font-size: 14px;
+}
+
+.skill-list-close {
+    margin-top: 5px;
+    border: none;
+    background: none;
+    color: #6d28d9;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.skill-list-close:hover {
+    text-decoration: underline;
+}
+
+.skills-error {
+    color: #dc2626;
+    }
